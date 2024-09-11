@@ -27,14 +27,14 @@ public class Movement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        /*Vector2 movement = moveAction.ReadValue<Vector2>();
+        Vector2 movement = moveAction.ReadValue<Vector2>();
         movement = movement.normalized;
         float horizontalMove = Time.deltaTime * speed * movement.x;
         float verticalMove = Time.deltaTime * speed * movement.y;
 
         Vector3 oldPos = this.gameObject.transform.position;
         Vector3 newPos = oldPos + new Vector3(horizontalMove, 0, verticalMove);
-        this.gameObject.transform.position = newPos;*/
+        this.gameObject.transform.position = newPos;
     }
 
     private void FixedUpdate()
