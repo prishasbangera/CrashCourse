@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,6 +10,10 @@ public class Movement : MonoBehaviour
     private Rigidbody rb;
     private bool canJump;
 
+    private int numCollisions;
+
+    [SerializeField]
+    TextMeshPro scoreText;
 
     [SerializeField]
     float jumpForce;
@@ -21,33 +26,31 @@ public class Movement : MonoBehaviour
     {
         PlayerInput inputComponent = this.gameObject.GetComponent<PlayerInput>();
         moveAction = inputComponent.actions.FindAction("Move");
-        rb = this.gameObject.GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody>();
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        /*
         Vector2 movement = moveAction.ReadValue<Vector2>();
         movement = movement.normalized;
-        float horizontalMove = Time.deltaTime * speed * movement.x;
-        float verticalMove = Time.deltaTime * speed * movement.y;
+        movement *= Time.deltaTime * speed;
 
-        Vector3 oldPos = this.gameObject.transform.position;
-        Vector3 newPos = oldPos + new Vector3(horizontalMove, 0, verticalMove);
-        this.gameObject.transform.position = newPos;
+        this.gameObject.transform.position += new Vector3(movement.x, 0, movement.y);
+        */
     }
 
     private void FixedUpdate()
     {
         Vector2 movement = moveAction.ReadValue<Vector2>();
-        movement = movement.normalized;
-        float horizontalMove = speed * movement.x;
-        float verticalMove = speed * movement.y;
+        movement = movement.normalized * speed;
 
         Vector3 oldVelocity = rb.velocity;
         float yVel = oldVelocity.y;
 
-        Vector3 newVelocity = new Vector3(horizontalMove, yVel, verticalMove);
+        Vector3 newVelocity = new Vector3(movement.x, yVel, movement.y);
         rb.velocity = newVelocity;
     }
 
@@ -63,8 +66,17 @@ public class Movement : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Platform")) {
+        if (collision.gameObject.CompareTag("Platform"))
+        {
             canJump = true;
         }
+
+        if (collision.gameObject.CompareTag("Projectile"))
+        {
+            numCollisions++;
+            scoreText.text = "Collisions " + numCollisions;
+        }
+
+
     }
 }

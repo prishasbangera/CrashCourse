@@ -31,13 +31,16 @@ public class AcidRain : MonoBehaviour
     {
         while (true)
         {
-            Vector3 spawnerPos = this.gameObject.transform.position;
-            float randX = Random.Range(spawnerPos.x - radius, spawnerPos.x + radius);
-            float randZ = Random.Range(spawnerPos.z - radius, spawnerPos.z + radius);
+            for (int i = 0; i < 3; i++)
+            {
+                Vector3 spawnerPos = this.gameObject.transform.position;
+                float randX = Random.Range(spawnerPos.x - radius, spawnerPos.x + radius);
+                float randZ = Random.Range(spawnerPos.z - radius, spawnerPos.z + radius);
 
-            Vector3 acidPos = new Vector3(randX, spawnerPos.y, randZ);
-            GameObject acid = Instantiate(acidPrefab, acidPos, Quaternion.identity);
-            Destroy(acid, delay);
+                Vector3 acidPos = new Vector3(randX, spawnerPos.y, randZ);
+                GameObject acid = Instantiate(acidPrefab, acidPos, Quaternion.identity);
+                Destroy(acid, delay);
+            }
             yield return new WaitForSeconds(cooldown);
         }
     }
